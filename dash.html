@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Performance Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Prompt for Thai) -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            light: '#e0f2fe',
+                            DEFAULT: '#0ea5e9',
+                            dark: '#0284c7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #f3f4f6; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-gray-800 h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-lg z-10 flex flex-col transition-all duration-300">
+        <div class="h-16 flex items-center px-6 border-b">
+            <i class="fa-solid fa-chart-pie text-brand text-2xl mr-3"></i>
+            <h1 class="font-bold text-lg">Campaign<br><span class="text-brand">Dashboard</span></h1>
+        </div>
+        
+        <nav class="flex-1 px-4 py-6 space-y-2">
+            <button onclick="switchTab('tab-exec', this)" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg text-left font-medium bg-brand-light text-brand-dark transition-colors">
+                <i class="fa-solid fa-house w-6"></i>
+                Executive Summary
+            </button>
+            <button onclick="switchTab('tab-utm', this)" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg text-left font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                <i class="fa-solid fa-network-wired w-6"></i>
+                UTM Source & Medium
+            </button>
+            <button onclick="switchTab('tab-campaign', this)" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg text-left font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                <i class="fa-solid fa-bullseye w-6"></i>
+                Campaign Objective
+            </button>
+        </nav>
+        
+        <div class="p-4 border-t text-xs text-gray-400">
+            อัปเดตข้อมูลล่าสุด: วันนี้ 10:00 น.
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <!-- Top Header -->
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-8 z-0">
+            <h2 id="page-title" class="text-xl font-semibold">ภาพรวมแคมเปญทั้งหมด</h2>
+            <div class="flex items-center space-x-4">
+                <div class="bg-gray-100 rounded-lg px-4 py-2 flex items-center text-sm">
+                    <i class="fa-regular fa-calendar mr-2"></i>
+                    <span>1 ม.ค. - 31 ม.ค. 2026</span>
+                </div>
+                <button class="bg-brand text-white px-4 py-2 rounded-lg text-sm hover:bg-brand-dark transition shadow-sm">
+                    <i class="fa-solid fa-download mr-1"></i> Export
+                </button>
+            </div>
+        </header>
+
+        <!-- Scrollable Content Area -->
+        <div class="flex-1 overflow-y-auto p-8">
+            
+            <!-- TAB 1: Executive Summary -->
+            <div id="tab-exec" class="tab-content active">
+                
+                <!-- Scorecards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <!-- Spend -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Total Spend</p>
+                                <h3 class="text-3xl font-bold">฿125,400</h3>
+                            </div>
+                            <div class="p-3 bg-red-50 text-red-500 rounded-lg"><i class="fa-solid fa-wallet"></i></div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm">
+                            <span class="text-red-500 flex items-center"><i class="fa-solid fa-arrow-up text-xs mr-1"></i> 12%</span>
+                            <span class="text-gray-400 ml-2">เทียบกับเดือนก่อน</span>
+                        </div>
+                    </div>
+
+                    <!-- Views -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Total Views / Impr.</p>
+                                <h3 class="text-3xl font-bold">1.2M</h3>
+                            </div>
+                            <div class="p-3 bg-blue-50 text-blue-500 rounded-lg"><i class="fa-solid fa-eye"></i></div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm">
+                            <span class="text-green-500 flex items-center"><i class="fa-solid fa-arrow-up text-xs mr-1"></i> 8%</span>
+                            <span class="text-gray-400 ml-2">เทียบกับเป้าหมาย</span>
+                        </div>
+                    </div>
+
+                    <!-- Clicks -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Total Clicks</p>
+                                <h3 class="text-3xl font-bold">45,200</h3>
+                            </div>
+                            <div class="p-3 bg-yellow-50 text-yellow-500 rounded-lg"><i class="fa-solid fa-hand-pointer"></i></div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm">
+                            <span class="text-green-500 flex items-center"><i class="fa-solid fa-arrow-up text-xs mr-1"></i> 15%</span>
+                            <span class="text-gray-400 ml-2">CTR: 3.76%</span>
+                        </div>
+                    </div>
+
+                    <!-- Leads -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Total Drop Leads</p>
+                                <h3 class="text-3xl font-bold">1,840</h3>
+                            </div>
+                            <div class="p-3 bg-green-50 text-green-500 rounded-lg"><i class="fa-solid fa-user-check"></i></div>
+                        </div>
+                        <div class="mt-4 flex items-center text-sm">
+                            <span class="text-green-500 flex items-center"><i class="fa-solid fa-arrow-up text-xs mr-1"></i> 5%</span>
+                            <span class="text-gray-400 ml-2">CPL: ฿68.15</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row 1 -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Line Chart -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 lg:col-span-2">
+                        <h3 class="font-semibold mb-4 text-gray-800">Performance Over Time</h3>
+                        <div class="h-72">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Funnel Chart (Simulated with Bar) -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <h3 class="font-semibold mb-4 text-gray-800">Marketing Funnel</h3>
+                        <div class="h-72 flex flex-col justify-center">
+                            <!-- Custom HTML Funnel -->
+                            <div class="w-full flex flex-col items-center space-y-2">
+                                <div class="w-full bg-blue-100 rounded-t-lg relative flex items-center justify-center" style="height: 60px;">
+                                    <div class="w-full bg-blue-400 absolute bottom-0 transition-all" style="height: 100%; border-radius: 8px 8px 0 0;"></div>
+                                    <span class="relative z-10 font-bold text-white drop-shadow-md">Views: 1,200,000</span>
+                                </div>
+                                <div class="text-gray-400 text-xs"><i class="fa-solid fa-arrow-down"></i> Drop-off 96%</div>
+                                <div class="w-3/4 bg-yellow-100 relative flex items-center justify-center" style="height: 60px;">
+                                    <div class="w-full bg-yellow-400 absolute bottom-0 transition-all" style="height: 100%;"></div>
+                                    <span class="relative z-10 font-bold text-white drop-shadow-md">Clicks: 45,200</span>
+                                </div>
+                                <div class="text-gray-400 text-xs"><i class="fa-solid fa-arrow-down"></i> CVR 4%</div>
+                                <div class="w-1/2 bg-green-100 rounded-b-lg relative flex items-center justify-center" style="height: 60px;">
+                                    <div class="w-full bg-green-500 absolute bottom-0 transition-all" style="height: 100%; border-radius: 0 0 8px 8px;"></div>
+                                    <span class="relative z-10 font-bold text-white drop-shadow-md">Leads: 1,840</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: UTM Source & Medium -->
+            <div id="tab-utm" class="tab-content">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <!-- Donut Chart -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <h3 class="font-semibold mb-4 text-gray-800">Leads by Source/Medium</h3>
+                        <div class="h-64">
+                            <canvas id="sourceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Scatter Plot -->
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 lg:col-span-2">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-gray-800">ช่องทางดาวรุ่ง (Leads vs CPL)</h3>
+                            <span class="text-xs text-gray-400">มุมขวาล่าง = ประสิทธิภาพดี (Leads สูง, CPL ต่ำ)</span>
+                        </div>
+                        <div class="h-64">
+                            <canvas id="scatterChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Matrix Table -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-6 border-b flex justify-between items-center bg-gray-50">
+                        <h3 class="font-semibold text-gray-800">Traffic & Conversion Matrix</h3>
+                        <input type="text" placeholder="ค้นหา Source..." class="px-3 py-1 border rounded-lg text-sm outline-none focus:border-brand">
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 text-sm border-b">
+                                    <th class="p-4 font-medium">Source / Medium</th>
+                                    <th class="p-4 font-medium text-right">Spend (฿)</th>
+                                    <th class="p-4 font-medium text-right">Views</th>
+                                    <th class="p-4 font-medium text-right">Clicks</th>
+                                    <th class="p-4 font-medium text-right">Leads</th>
+                                    <th class="p-4 font-medium text-right">CPC (฿)</th>
+                                    <th class="p-4 font-medium text-right">CPL (฿)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr class="border-b hover:bg-gray-50 transition">
+                                    <td class="p-4 font-medium"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs mr-2">facebook</span>cpc</td>
+                                    <td class="p-4 text-right">50,000</td>
+                                    <td class="p-4 text-right">600,000</td>
+                                    <td class="p-4 text-right">25,000</td>
+                                    <td class="p-4 text-right font-bold text-green-600">850</td>
+                                    <td class="p-4 text-right">2.00</td>
+                                    <td class="p-4 text-right">58.82</td>
+                                </tr>
+                                <tr class="border-b hover:bg-gray-50 transition">
+                                    <td class="p-4 font-medium"><span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs mr-2">google</span>search</td>
+                                    <td class="p-4 text-right">45,000</td>
+                                    <td class="p-4 text-right">150,000</td>
+                                    <td class="p-4 text-right">12,000</td>
+                                    <td class="p-4 text-right font-bold text-green-600">620</td>
+                                    <td class="p-4 text-right">3.75</td>
+                                    <td class="p-4 text-right">72.58</td>
+                                </tr>
+                                <tr class="border-b hover:bg-gray-50 transition">
+                                    <td class="p-4 font-medium"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs mr-2">line</span>broadcast</td>
+                                    <td class="p-4 text-right">15,000</td>
+                                    <td class="p-4 text-right">200,000</td>
+                                    <td class="p-4 text-right">5,000</td>
+                                    <td class="p-4 text-right font-bold text-green-600">250</td>
+                                    <td class="p-4 text-right">3.00</td>
+                                    <td class="p-4 text-right">60.00</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="p-4 font-medium"><span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs mr-2">tiktok</span>cpc</td>
+                                    <td class="p-4 text-right">15,400</td>
+                                    <td class="p-4 text-right">250,000</td>
+                                    <td class="p-4 text-right">3,200</td>
+                                    <td class="p-4 text-right font-bold text-green-600">120</td>
+                                    <td class="p-4 text-right">4.81</td>
+                                    <td class="p-4 text-right text-red-500">128.33</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: Campaign Objective -->
+            <div id="tab-campaign" class="tab-content">
+                
+                <!-- Objective Filters -->
+                <div class="flex space-x-4 mb-6">
+                    <button onclick="switchObj('obj-view', this)" class="obj-btn px-6 py-2 rounded-full border-2 border-brand bg-brand text-white font-medium transition shadow-sm">
+                        <i class="fa-solid fa-eye mr-2"></i> Awareness (เน้น View)
+                    </button>
+                    <button onclick="switchObj('obj-click', this)" class="obj-btn px-6 py-2 rounded-full border-2 border-gray-200 text-gray-600 hover:border-brand hover:text-brand bg-white font-medium transition">
+                        <i class="fa-solid fa-hand-pointer mr-2"></i> Traffic (เน้น Click)
+                    </button>
+                    <button onclick="switchObj('obj-lead', this)" class="obj-btn px-6 py-2 rounded-full border-2 border-gray-200 text-gray-600 hover:border-brand hover:text-brand bg-white font-medium transition">
+                        <i class="fa-solid fa-user-check mr-2"></i> Conversion (เน้น Lead)
+                    </button>
+                </div>
+
+                <!-- Dynamic Content Area for Objectives -->
+                <div id="obj-view" class="obj-content block">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800">แคมเปญประเภท: โฆษณาสร้างการรับรู้ (Awareness)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-500">
+                            <p class="text-xs text-gray-500">Impressions (Total)</p>
+                            <h4 class="text-2xl font-bold">850,000</h4>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-500">
+                            <p class="text-xs text-gray-500">Reach (Unique)</p>
+                            <h4 class="text-2xl font-bold">540,200</h4>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-500">
+                            <p class="text-xs text-gray-500">CPM (Cost per 1,000 Impr.)</p>
+                            <h4 class="text-2xl font-bold">฿45.50</h4>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-blue-500">
+                            <p class="text-xs text-gray-500">CPV (Cost per View - VDO)</p>
+                            <h4 class="text-2xl font-bold">฿0.12</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="obj-click" class="obj-content hidden">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800">แคมเปญประเภท: ดึงคนเข้าเว็บไซต์ (Traffic)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-yellow-500">
+                            <p class="text-xs text-gray-500">Total Clicks</p>
+                            <h4 class="text-2xl font-bold">35,000</h4>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-yellow-500">
+                            <p class="text-xs text-gray-500">CTR (Click-Through Rate)</p>
+                            <h4 class="text-2xl font-bold">4.2%</h4>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-yellow-500">
+                            <p class="text-xs text-gray-500">CPC (Cost per Click)</p>
+                            <h4 class="text-2xl font-bold">฿2.50</h4>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-yellow-500">
+                            <p class="text-xs text-gray-500">Landing Page Views</p>
+                            <h4 class="text-2xl font-bold">28,500</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="obj-lead" class="obj-content hidden">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-800">แคมเปญประเภท: หาผู้มุ่งหวัง (Lead Generation)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-green-500">
+                            <p class="text-xs text-gray-500">Total Drop Leads</p>
+                            <h4 class="text-2xl font-bold">1,450</h4>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-green-500">
+                            <p class="text-xs text-gray-500">Conversion Rate (CVR)</p>
+                            <h4 class="text-2xl font-bold">8.5%</h4>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-green-500">
+                            <p class="text-xs text-gray-500">Cost per Lead (CPL)</p>
+                            <h4 class="text-2xl font-bold">฿55.20</h4>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-green-500">
+                            <p class="text-xs text-gray-500">Quality Lead Score</p>
+                            <h4 class="text-2xl font-bold">A-</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campaign List placeholder -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 mt-6">
+                    <h3 class="font-semibold mb-4 text-gray-800">รายการ Campaign ระดับลึก</h3>
+                    <p class="text-gray-500 text-sm">ตารางข้อมูลแคมเปญจะถูก Filter อัตโนมัติ ตามปุ่ม Objective ที่เลือกด้านบน (Mockup)</p>
+                    <div class="w-full h-32 bg-gray-50 rounded-lg border-dashed border-2 border-gray-200 mt-4 flex items-center justify-center">
+                        <span class="text-gray-400"><i class="fa-solid fa-table mr-2"></i>Data Table Area</span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Scripts for interaction and charts -->
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId, btnElement) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+
+            // Update UI for Sidebar Buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-light', 'text-brand-dark');
+                btn.classList.add('text-gray-500', 'hover:bg-gray-50');
+            });
+            btnElement.classList.add('bg-brand-light', 'text-brand-dark');
+            btnElement.classList.remove('text-gray-500', 'hover:bg-gray-50');
+
+            // Update Header Title
+            const titles = {
+                'tab-exec': 'ภาพรวมแคมเปญทั้งหมด (Executive Summary)',
+                'tab-utm': 'วิเคราะห์ช่องทาง (UTM Source & Medium)',
+                'tab-campaign': 'เจาะลึกเป้าหมาย (Campaign Objective)'
+            };
+            document.getElementById('page-title').innerText = titles[tabId];
+        }
+
+        // Objective Switching Logic (Tab 3)
+        function switchObj(objId, btnElement) {
+            // Hide all obj content
+            document.querySelectorAll('.obj-content').forEach(content => {
+                content.classList.add('hidden');
+                content.classList.remove('block');
+            });
+            // Show selected obj
+            document.getElementById(objId).classList.remove('hidden');
+            document.getElementById(objId).classList.add('block');
+
+            // Reset buttons styling
+            document.querySelectorAll('.obj-btn').forEach(btn => {
+                btn.classList.remove('bg-brand', 'text-white', 'border-brand');
+                btn.classList.add('border-gray-200', 'text-gray-600', 'bg-white');
+            });
+            // Active button styling
+            btnElement.classList.remove('border-gray-200', 'text-gray-600', 'bg-white');
+            btnElement.classList.add('bg-brand', 'text-white', 'border-brand');
+        }
+
+        // Initialize Chart.js
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 1. Trend Line Chart (Views, Clicks, Leads over time)
+            const ctxTrend = document.getElementById('trendChart').getContext('2d');
+            new Chart(ctxTrend, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [
+                        {
+                            label: 'Views (x10k)',
+                            data: [20, 35, 40, 25],
+                            borderColor: '#3b82f6',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Clicks (x1k)',
+                            data: [8, 12, 15, 10],
+                            borderColor: '#eab308',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Leads (x100)',
+                            data: [3, 5, 6, 4.4],
+                            borderColor: '#22c55e',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // 2. Source Doughnut Chart
+            const ctxSource = document.getElementById('sourceChart').getContext('2d');
+            new Chart(ctxSource, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Facebook', 'Google Search', 'Line', 'TikTok'],
+                    datasets: [{
+                        data: [46, 33, 14, 7],
+                        backgroundColor: ['#3b82f6', '#ef4444', '#22c55e', '#a855f7'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: { legend: { position: 'right' } }
+                }
+            });
+
+            // 3. Scatter Chart (Leads vs CPL)
+            const ctxScatter = document.getElementById('scatterChart').getContext('2d');
+            new Chart(ctxScatter, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        { label: 'FB/CPC', data: [{x: 850, y: 58}], backgroundColor: '#3b82f6' },
+                        { label: 'Google/Search', data: [{x: 620, y: 72}], backgroundColor: '#ef4444' },
+                        { label: 'Line/BC', data: [{x: 250, y: 60}], backgroundColor: '#22c55e' },
+                        { label: 'TikTok/CPC', data: [{x: 120, y: 128}], backgroundColor: '#a855f7' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    return `${ctx.dataset.label}: Leads=${ctx.raw.x}, CPL=฿${ctx.raw.y}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'จำนวน Leads' } },
+                        y: { title: { display: true, text: 'CPL (Cost per Lead)' }, beginAtZero: true }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
