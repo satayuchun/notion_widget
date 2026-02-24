@@ -464,12 +464,129 @@
                     </div>
                 </div>
 
-                <!-- Campaign List placeholder -->
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100 mt-6">
-                    <h3 class="font-semibold mb-4 text-gray-800">รายการ Campaign ระดับลึก</h3>
-                    <p class="text-gray-500 text-sm">ตารางข้อมูลแคมเปญจะถูก Filter อัตโนมัติ ตามปุ่ม Objective ที่เลือกด้านบน (Mockup)</p>
-                    <div class="w-full h-32 bg-gray-50 rounded-lg border-dashed border-2 border-gray-200 mt-4 flex items-center justify-center">
-                        <span class="text-gray-400"><i class="fa-solid fa-table mr-2"></i>Data Table Area</span>
+                <!-- Campaign Ranking Table (Replaced Placeholder) -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
+                    <div class="p-6 border-b flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-50 gap-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-800">Campaign Ranking & Performance</h3>
+                            <p class="text-xs text-gray-500 mt-1">เปรียบเทียบประสิทธิภาพแต่ละแคมเปญประจำเดือน พร้อมระยะเวลาที่รันแคมเปญ</p>
+                        </div>
+                        <select class="px-3 py-2 border rounded-lg text-sm outline-none focus:border-brand bg-white shadow-sm">
+                            <option>🏆 เรียงตาม Achievement สูงสุด</option>
+                            <option>เรียงตามจำนวน Leads สูงสุด</option>
+                            <option>เรียงตาม CPL ต่ำสุด</option>
+                            <option>เรียงตามยอด Spend สูงสุด</option>
+                        </select>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 text-sm border-b">
+                                    <th class="p-4 font-medium w-16 text-center">Rank</th>
+                                    <th class="p-4 font-medium">Campaign Name & Duration</th>
+                                    <th class="p-4 font-medium">Objective</th>
+                                    <th class="p-4 font-medium text-right">Spend (฿)</th>
+                                    <th class="p-4 font-medium text-right">Key Result</th>
+                                    <th class="p-4 font-medium text-right">Cost/Result (฿)</th>
+                                    <th class="p-4 font-medium text-center w-32">Daily Trend</th>
+                                    <th class="p-4 font-medium w-48">Target Progress</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <!-- Rank 1 -->
+                                <tr class="border-b hover:bg-gray-50 transition">
+                                    <td class="p-4 text-center font-bold text-yellow-500"><i class="fa-solid fa-trophy text-2xl drop-shadow-sm"></i></td>
+                                    <td class="p-4">
+                                        <div class="font-medium text-gray-800 text-base">Q1_Mega_Sale_Promo</div>
+                                        <div class="text-xs text-gray-500 flex items-center mt-1">
+                                            <i class="fa-regular fa-calendar-days mr-1 text-gray-400"></i> 1 ม.ค. - 15 ม.ค. 2026
+                                        </div>
+                                    </td>
+                                    <td class="p-4"><span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">Conversion</span></td>
+                                    <td class="p-4 text-right">45,000</td>
+                                    <td class="p-4 text-right font-bold text-gray-800 text-base">850 <span class="text-xs font-normal text-gray-500">Leads</span></td>
+                                    <td class="p-4 text-right text-green-600 font-medium">52.94 <span class="text-xs font-normal text-gray-500">/Lead</span></td>
+                                    <td class="p-4">
+                                        <div class="h-10 w-28 mx-auto" title="ช่วงกลางแคมเปญยอดพุ่งสูงสุด">
+                                            <canvas class="sparkline" data-trend="[10, 20, 35, 60, 120, 180, 200, 150, 80, 50, 20, 15, 10, 5, 2]" data-color="#22c55e"></canvas>
+                                        </div>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="flex justify-between text-xs mb-1"><span class="text-gray-500">Target: 800</span><span class="font-medium text-green-600">106%</span></div>
+                                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div></div>
+                                    </td>
+                                </tr>
+                                <!-- Rank 2 -->
+                                <tr class="border-b hover:bg-gray-50 transition">
+                                    <td class="p-4 text-center font-bold text-gray-400 text-xl">2</td>
+                                    <td class="p-4">
+                                        <div class="font-medium text-gray-800 text-base">Weekend_Booth_BKK</div>
+                                        <div class="text-xs text-gray-500 flex items-center mt-1">
+                                            <i class="fa-regular fa-calendar-days mr-1 text-gray-400"></i> 24 ม.ค. - 25 ม.ค. 2026
+                                        </div>
+                                    </td>
+                                    <td class="p-4"><span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-medium">On-ground</span></td>
+                                    <td class="p-4 text-right">8,500</td>
+                                    <td class="p-4 text-right font-bold text-gray-800 text-base">1,800 <span class="text-xs font-normal text-gray-500">Scans</span></td>
+                                    <td class="p-4 text-right text-orange-600 font-medium">4.72 <span class="text-xs font-normal text-gray-500">/Scan</span></td>
+                                    <td class="p-4">
+                                        <div class="h-10 w-28 mx-auto" title="รันแคมเปญแค่ 2 วัน วันเสาร์และอาทิตย์">
+                                            <canvas class="sparkline" data-trend="[800, 1000]" data-color="#f97316"></canvas>
+                                        </div>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="flex justify-between text-xs mb-1"><span class="text-gray-500">Target: 2,000</span><span class="font-medium text-orange-600">90%</span></div>
+                                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-orange-500 h-2 rounded-full" style="width: 90%"></div></div>
+                                    </td>
+                                </tr>
+                                <!-- Rank 3 -->
+                                <tr class="border-b hover:bg-gray-50 transition">
+                                    <td class="p-4 text-center font-bold text-orange-400 text-xl">3</td>
+                                    <td class="p-4">
+                                        <div class="font-medium text-gray-800 text-base">New_Product_Launch_Jan</div>
+                                        <div class="text-xs text-gray-500 flex items-center mt-1">
+                                            <i class="fa-regular fa-calendar-days mr-1 text-gray-400"></i> 10 ม.ค. - 31 ม.ค. 2026
+                                        </div>
+                                    </td>
+                                    <td class="p-4"><span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">Awareness</span></td>
+                                    <td class="p-4 text-right">60,000</td>
+                                    <td class="p-4 text-right font-bold text-gray-800 text-base">1.2M <span class="text-xs font-normal text-gray-500">Views</span></td>
+                                    <td class="p-4 text-right text-blue-600 font-medium">50.00 <span class="text-xs font-normal text-gray-500">CPM</span></td>
+                                    <td class="p-4">
+                                        <div class="h-10 w-28 mx-auto" title="พุ่งสูงช่วงเปิดตัวแรกๆ แล้วค่อยๆ ดรอปลง">
+                                            <canvas class="sparkline" data-trend="[150, 120, 100, 80, 60, 50, 45, 40, 35, 30, 25, 20, 20, 15, 10]" data-color="#3b82f6"></canvas>
+                                        </div>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="flex justify-between text-xs mb-1"><span class="text-gray-500">Target: 1.5M</span><span class="font-medium text-blue-600">80%</span></div>
+                                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-blue-500 h-2 rounded-full" style="width: 80%"></div></div>
+                                    </td>
+                                </tr>
+                                <!-- Rank 4 -->
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="p-4 text-center font-bold text-gray-400 text-xl">4</td>
+                                    <td class="p-4">
+                                        <div class="font-medium text-gray-800 text-base">Content_Blog_Traffic</div>
+                                        <div class="text-xs text-gray-500 flex items-center mt-1">
+                                            <i class="fa-regular fa-calendar-days mr-1 text-gray-400"></i> 1 ม.ค. - 31 ม.ค. 2026
+                                        </div>
+                                    </td>
+                                    <td class="p-4"><span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-medium">Traffic</span></td>
+                                    <td class="p-4 text-right">11,900</td>
+                                    <td class="p-4 text-right font-bold text-gray-800 text-base">8,500 <span class="text-xs font-normal text-gray-500">Clicks</span></td>
+                                    <td class="p-4 text-right text-yellow-600 font-medium">1.40 <span class="text-xs font-normal text-gray-500">CPC</span></td>
+                                    <td class="p-4">
+                                        <div class="h-10 w-28 mx-auto" title="ยอดคลิกค่อยๆ โตขึ้นเรื่อยๆ แบบ Organic">
+                                            <canvas class="sparkline" data-trend="[10, 15, 20, 25, 30, 40, 45, 55, 65, 80, 95, 110]" data-color="#eab308"></canvas>
+                                        </div>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="flex justify-between text-xs mb-1"><span class="text-gray-500">Target: 15,000</span><span class="font-medium text-yellow-600">56%</span></div>
+                                        <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-yellow-500 h-2 rounded-full" style="width: 56%"></div></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -644,6 +761,52 @@
                         y: { title: { display: true, text: 'CPL (Cost per Lead)' }, beginAtZero: true }
                     }
                 }
+            });
+
+            // 4. Initialize Sparklines (Daily Trend ในตาราง)
+            document.querySelectorAll('.sparkline').forEach(canvas => {
+                const rawData = JSON.parse(canvas.dataset.trend);
+                const color = canvas.dataset.color || '#0ea5e9';
+                
+                new Chart(canvas.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: rawData.map((_, i) => `Day ${i + 1}`), // ใช้แกน X เป็นจำนวนวัน
+                        datasets: [{
+                            data: rawData,
+                            borderColor: color,
+                            borderWidth: 2,
+                            tension: 0.4, // ทำให้เส้นโค้งสวยงาม
+                            pointRadius: 0, // ซ่อนจุดไข่ปลา
+                            pointHoverRadius: 4, // โชว์จุดตอนเอาเมาส์ชี้
+                            fill: true,
+                            backgroundColor: color + '20' // สีพื้นหลังแบบโปร่งใส 20%
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { 
+                            legend: { display: false },
+                            tooltip: { 
+                                displayColors: false,
+                                callbacks: {
+                                    title: () => null, // ซ่อน title ใน tooltip
+                                    label: (ctx) => `Result: ${ctx.raw}` // โชว์เฉพาะตัวเลขผลลัพธ์
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { display: false }, // ซ่อนแกน X
+                            y: { display: false, min: 0 } // ซ่อนแกน Y
+                        },
+                        layout: { padding: 2 },
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    }
+                });
             });
         });
     </script>
